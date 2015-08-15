@@ -1,0 +1,131 @@
+<!-- TRIBUTE TO PIRHOO'S IFRAME SCAFFOLDER
+pirhoo.github.io/iframe-scaffolder/ -->
+
+<meta charset="utf-8">
+<script src="jquery-2.1.4.min.js" type="text/javascript"></script>
+
+
+<style type="text/css">
+body{
+    margin:0;
+    font-family: Verdana;
+}
+#gifs{
+    width:100%;
+    height:100%;
+    overflow:hidden;
+}
+#settings{
+    border:1px solid #666;
+    padding:20px;
+    margin-bottom: 20px;
+    display:none;
+    position:absolute;
+    left:0;
+    top:0;
+    background: white;
+    width:100%;
+    z-index: 10;
+}
+#settings_btn{
+    width:40px;
+    position:absolute;
+    right:10px;
+    top:10px;
+    cursor: pointer;
+    z-index: 1000;
+}
+#tweeter{
+    width:130px;
+    position:absolute;
+    right:10px;
+    text-align: right;
+    top:60px;
+    z-index: 1000;
+}
+#settings_btn img{
+    width:100%;
+}
+</style>
+<body>
+<div id="settings_btn" title="Modifier les paramètres"><img src="settings.png" alt="CC BY 2.0/Alexandr Cherkinsky"></div>
+<div id="tweeter"><a href="https://twitter.com/share" class="twitter-share-button" data-hashtags="gifscaffolder">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script></div>
+<div id="settings">
+    <p><strong>Gif Scaffolder</strong></p>
+<p><label>Adresse de l'image : <input type="text" value="" size="100"></label></p>
+<p><button id="moins">Images plus petites</button> <button id="plus">Images plus grandes</button></p>
+</div>
+<div id="gifs"></div>
+
+<script type="text/javascript">
+var image = "http://media.giphy.com/media/GYISTjvdik4MM/giphy.gif";
+var largeur = Math.floor($(window).width()/6);
+var nombre = 1000;
+var show = false;
+// console.log("$(window).width()",$(window).width())
+// console.log("largeur",largeur)
+goGif("start")
+$(window).on("resize",function(){goGif()})
+$("input[type=text]").change(function(){
+    image = $(this).val()
+    goGif()
+})
+$("#moins").click(function(){
+    if(largeur/2 >= 5) largeur = largeur/2;
+    goGif()
+})
+$("#plus").click(function(){
+    if(largeur*2 <= $(window).width()) largeur = largeur*2;
+     goGif()
+})
+$("#settings_btn").click(function(){
+    if($("#settings").is(":visible")) $("#settings").hide();
+    else $("#settings").show();
+    show = !show;
+})
+function goGif(step){
+
+    $("#gifs *").remove()
+     params = window.location.hash.substring(1).split("|");
+     if(step == "start"){
+        $("#settings").show()
+     }
+     if(step == "start" && params.length == 2){
+            image = params[0];
+            largeur = params[1];
+     }
+        
+   
+   
+
+    window.location.hash = "#"+image+"|"+largeur;
+
+    
+    $("input[type=text]").val(image)
+
+    nbColumns = Math.floor($(window).width()/largeur)
+   // console.log("nbcolumns:",nbColumns)
+
+    largeurProvisoire = Math.floor($(window).width()/nbColumns);
+   // console.log("largeurProvisoire:",largeurProvisoire)
+    $("#gifs").append('<img src="'+image+'" width="'+largeurProvisoire+'" />')
+    $("#gifs img:first-child").load(function(){
+        nbLines = Math.ceil($(window).height()/$(this).height()) + 1;
+        nombre = nbLines*nbColumns;
+         $("#gifs *").remove()
+        for (var i = 0;i <= nombre;i++){
+            $("#gifs").append('<img src="'+image+'" width="'+largeurProvisoire+'" />')
+        }
+    })
+
+
+    
+  
+    
+}
+
+
+</script>
+
+</body>
