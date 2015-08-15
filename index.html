@@ -92,14 +92,14 @@ function goGif(step){
         $("#settings").show()
      }
      if(step == "start" && params.length == 2){
-            image = params[0];
+            image = decodeURI(params[0]);
             largeur = params[1];
      }
         
    
    
 
-    window.location.hash = "#"+image+"|"+largeur;
+    window.location.hash = "#"+encodeURI(image)+"|"+largeur;
 
     
     $("input[type=text]").val(image)
