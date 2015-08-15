@@ -87,19 +87,19 @@ $("#settings_btn").click(function(){
 function goGif(step){
 
     $("#gifs *").remove()
-     params = window.location.hash.substring(1).split("|");
+     params = window.location.hash.substring(1).split("&");
      if(step == "start"){
         $("#settings").show()
      }
      if(step == "start" && params.length == 2){
-            image = decodeURI(params[0]);
+            image = params[0];
             largeur = params[1];
      }
         
    
    
 
-    window.location.hash = "#"+encodeURI(image)+"|"+largeur;
+    window.location.hash = "#"+image+"&"+largeur;
 
     
     $("input[type=text]").val(image)
